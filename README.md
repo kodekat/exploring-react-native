@@ -1,4 +1,3 @@
-# exploring-react-native
 # Exploring React Native - MobileSpace
 
 This repo serves as an introduction to React Native for MobileSpace Season 2
