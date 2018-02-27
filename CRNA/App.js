@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Alert, ScrollView, Image, FlatList } from 'react-native';
-import Swiper from 'react-native-swiper';
+import { StyleSheet, Text, View, Button, Alert, ScrollView, 
+  Image, FlatList, TextInput, Keyboard } from 'react-native';
+
 const COMMUNITY_MEMBERS = [
   {
     name: 'Monte Thakkar',
@@ -80,47 +81,97 @@ const COMMUNITY_MEMBERS = [
 ]
 
 export default class App extends React.Component {
-  _onPress() {
-    Alert.alert('Yay! This is a pop-up alert.');
+  constructor(props){
+    super(props);
+
+    this.state = {
+      backgroundColor: '#3A0088',
+    }
   }
+ 
+  /*change background color to random every click*/
+  handleClick = () => {
+    //Generate Random Color
+    const randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+    console.log(randomColor);
+    //Changes state of background color
+    this.setState({
+      backgroundColor: randomColor
+    })
+  }
+  /*magic word handle submitted text*/
+  handleSubmit = () => {
+    const {phrase}  = this.state
+    
+    if (phrase === 'Space' || phrase === 'Galaxy') {
+      Keyboard.dismiss 
+      console.log("Correct Phrase Entered")
+      Alert.alert(
+        'Success!', '',
+        [{text: 'OK', onPress: () => console.log('OK Pressed')},],
+        { cancelable: false }
+      )
+    } else {
+      Keyboard.dismiss
+      TextInput.clear
+      console.log("Incorrect Phrase Entered")
+      Alert.alert(
+        'Invalid Input!', '',
+        [ {text: 'Try Again', onPress: () => console.log('Try Again Pressed')},
+       ],
+        { cancelable: false }
+      )
+    }
+
+  } 
   render() {
     return (
       <ScrollView style={styles.scrollView}>
        <View style={styles.bigImageContainer}>
         <Image
-        source={require('./Really_Big_Space.png')}
+        source={require('./OuterSpace.png')}
         style={styles.bigImage}
         />
        </View>
        <View style= {styles.twoImagesContainer}>
        <Image
-        source={require('./Really_Big_Space.png')}
+        source={require('./galaxy.jpeg')}
         style={styles.twoImages}
         />
         <Image
-        source={require('./Really_Big_Space.png')}
+        source={require('./galaxy.jpeg')}
         style={styles.twoImages}
         />
        </View>
-      <View style={styles.container}>
-        
+      <View style={styles.toggleContainer} 
+      backgroundColor={this.state.backgroundColor}>
           <View style={styles.buttonContainer}>
-          <Button onPress={this._onPress} 
-          title="Click Here" color="#ffffff" accessibilityLabel="Tap on Me"/>
+          <Button onPress={this.handleClick}
+          title="Change Background Color" color="#ffffff" />
           </View>
      </View>  
+     <View style={styles.phraseContainer} >
+        <TextInput
+            style={styles.phraseInput}
+            value={this.state.phrase}
+            placeholder="Enter the Magic Word"
+            placeholderTextColor="white"
+            selectionColor="white"
+            onChangeText={(text) => this.setState({phrase: text})}
+            onSubmitEditing={this.handleSubmit.bind(this)}
+            />
+     </View>
      <FlatList 
       style={styles.membersList}
       data={COMMUNITY_MEMBERS}
       renderItem= {({item, separator})=> (
-        <View style={styles.itemContainer}>
-        
+        <View style={styles.memberContainer}>
           <View style={styles.imageNameContainer}>
             <Image 
               source={{uri: item.image}}
               style={{
-                width:60,
-                height:60
+                width:70,
+                height:70
               }}
             />
             <Text> {item.name} </Text>
@@ -140,10 +191,10 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  
-  scrollView:{
+ /*scroll style*/ 
+  scrollView:{ 
     flexGrow: 1,
-    backgroundColor: 'red',
+    backgroundColor: '#3A0088',
   },
 
   bigImageContainer:{
@@ -151,58 +202,79 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row'
   },
-
   bigImage:{
-    height: 300
-
+    height:250,
+    width: 380
   },
   twoImagesContainer:{
     alignContent: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
     padding: 30,
-    backgroundColor: 'teal'
+    backgroundColor: '#400080'
   },
   twoImages:{
     height:100,
     width: 100,
     borderRadius:50
-
   },
+  /*list at the bottom*/
   membersList:{
-    flex:1,
-
+    flex: 1,
+    backgroundColor: '#cccccc',
+    borderTopWidth: 1,
+    borderColor: 'gray'
   },
-  itemContainer:{
+  memberContainer:{
     flexDirection:'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   imageNameContainer:{
-    flexDirection:'row'
+    flexDirection:'row',
+    alignItems: 'center'
   },
-  
   gitHubName:{
     flex:1,
     alignItems:'flex-end'
 
   },
-  container: {
+  /*change button color*/
+  toggleContainer: {
     flex: 1,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white',
-  },
-  textbox: {
-    fontSize: 30,
-    color: '#ccff99'
   },
   buttonContainer:{
     borderRadius: 30,
     padding: 10,
     shadowColor: '#000000',
-    backgroundColor: '#2E9298',
-    shadowOpacity: 0.25
-  }
+    shadowOpacity: 0.25,
+    backgroundColor: '#00B7C2',
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 30,   
+  },
+  /*magic phrase*/
+  phraseContainer: {
+    flex:1,
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  phraseInput: {
+    fontSize: 20,
+    marginLeft:55,
+    marginRight:55,
+    borderRadius: 50,
+    padding: 15,
+    shadowColor: '#000000',
+    shadowOpacity: 0.25,
+    backgroundColor: '#00B7C2',
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 30,
+    alignContent: 'center'
+   
+  },
 });
