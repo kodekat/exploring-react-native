@@ -1,4 +1,7 @@
-# Exploring React Native - MobileSpace
+# Exploring React Native - MobileSpace 
+
+**** See what this project looks like -> RNexploredisplay.gif ****
+
 
 This repo serves as an introduction to React Native for MobileSpace Season 2
 
@@ -99,9 +102,6 @@ For more details or if you run into trouble, follow [this guide](https://docs.ex
 
 Once you have completed this assignment, please create a new issue on this repo with the title as your name and add the link to your repo in the description. One of the TA's will review your code and add your name to the list of completed submissions if it looks good.
 
-## Problems?
-
-In case you run into any problems or issues, please post it on #questions channel on the MobileSpace Slack.
 
 ## Finally
 
